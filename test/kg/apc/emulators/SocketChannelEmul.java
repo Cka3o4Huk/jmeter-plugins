@@ -3,8 +3,11 @@ package kg.apc.emulators;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketOption;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Set;
+
 import kg.apc.jmeter.JMeterPluginsUtils;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
@@ -137,4 +140,53 @@ public class SocketChannelEmul extends SocketChannel {
         writtenBytesCount = 0;
         return res;
     }
+
+	@Override
+	public SocketAddress getLocalAddress() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T getOption(SocketOption<T> arg0) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<SocketOption<?>> supportedOptions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocketChannel bind(SocketAddress arg0) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocketAddress getRemoteAddress() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> SocketChannel setOption(SocketOption<T> arg0, T arg1)
+			throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocketChannel shutdownInput() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocketChannel shutdownOutput() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
