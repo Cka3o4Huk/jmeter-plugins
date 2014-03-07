@@ -25,8 +25,9 @@ import org.apache.log.Logger;
  * @author Bakir Jusufbegovic / AtlantBH
  */
 public class JSONPathExtractor extends AbstractTestElement implements PostProcessor {
+	
     private static final Logger log = LoggingManager.getLoggerForClass();
-
+    private static final Boolean logException = Boolean.getBoolean("jsonathextractor");
     private static final long serialVersionUID = 1L;
 
     private static final String JSONPATH = "JSONPATH";
@@ -81,7 +82,9 @@ public class JSONPathExtractor extends AbstractTestElement implements PostProces
         try {
             response = this.extractJSONPath(responseData, this.getJsonPath());
         } catch (Exception e) {
-            log.error("Extract failed", e);
+            if(logException){
+            	log.error("Extract failed", e);
+            }
             response = getDefaultValue();
         }
 

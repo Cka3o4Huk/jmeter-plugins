@@ -157,6 +157,12 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
+		<!-- JSON -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>0.8.1</version>
+        </dependency>
     </dependencies>
 
     <build>

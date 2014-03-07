@@ -1,6 +1,8 @@
 package com.googlecode.jmeter.plugins.webdriver.config;
 
 import org.apache.jmeter.testelement.ThreadListener;
+import org.apache.jmeter.threads.JMeterContext;
+import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 import org.openqa.selenium.Capabilities;
@@ -25,6 +27,13 @@ public class ChromeDriverConfig extends WebDriverConfig<ChromeDriver> implements
 
     private static volatile ChromeDriverService freeSharedService = null;
     private static volatile ChromeDriver freeSharedBrowser = null;
+    private static volatile JMeterContext actualDevContext = null;
+    
+    public static JMeterContext getDevContext(){
+    	//if(isDevMode())
+    	return actualDevContext;
+    	//throw new RuntimeException("Attempt to get development context in non-dev mode");
+    }
     
     @Override
     public void threadStarted() {
@@ -46,6 +55,7 @@ public class ChromeDriverConfig extends WebDriverConfig<ChromeDriver> implements
         if(isDevMode()){
         	freeSharedBrowser = chromeDriverDriver;
         	freeSharedService = service;
+        	actualDevContext = null;
         	return;
         }
         
@@ -75,12 +85,12 @@ public class ChromeDriverConfig extends WebDriverConfig<ChromeDriver> implements
     }
 
     Capabilities createCapabilities() {
-	ChromeOptions opts = new ChromeOptions();
-	opts.addArguments(getChromeDriverArgs().split(";"));
-    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-    capabilities.setCapability(CapabilityType.PROXY, createProxy());
-	capabilities.setCapability(ChromeOptions.CAPABILITY, opts);
-        return capabilities;
+		//ChromeOptions opts = new ChromeOptions();
+		//opts.addArguments(getChromeDriverArgs().split(";"));
+	    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+	    capabilities.setCapability(CapabilityType.PROXY, createProxy());
+		//capabilities.setCapability(ChromeOptions.CAPABILITY, opts);
+	    return capabilities;
     }
 
     Map<String, ChromeDriverService> getServices() {
@@ -90,10 +100,11 @@ public class ChromeDriverConfig extends WebDriverConfig<ChromeDriver> implements
     @Override
     protected ChromeDriver createBrowser() {
     	if(isDevMode())
+    		actualDevContext = JMeterContextService.getContext();
         	synchronized (ChromeDriverConfig.class) {
         		if(freeSharedBrowser != null){                	
         			ChromeDriver dr = freeSharedBrowser;
-        			freeSharedBrowser = null; 
+        			freeSharedBrowser = null;         			
         			try{
         				dr.getRemoteStatus();
         				dr.navigate().to("about:blank");
